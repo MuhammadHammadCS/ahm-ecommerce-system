@@ -1,6 +1,6 @@
 # AHM Ecommerce System
 
-A full-stack ecommerce web application built with **Node.js**, **Express**, and **MySQL**. Features JWT authentication, role-based access control (customer/admin), product management, shopping cart, and order processing — all served with a vanilla HTML/CSS/JS frontend.
+A full-stack ecommerce web application built with **Node.js**, **Express**, and **MySQL**. Features JWT authentication, role-based access control (customer/admin), product management, shopping cart, order processing, contact form, and more — all served with a vanilla HTML/CSS/JS frontend.
 
 ## Tech Stack
 
@@ -16,11 +16,14 @@ A full-stack ecommerce web application built with **Node.js**, **Express**, and 
 
 ```
 ahm-ecommerce-system/
+├── assets/
+│   └── graphics/            # Static assets like images
 ├── config/
 │   └── db.js               # MySQL connection pool
 ├── controllers/
 │   ├── authController.js    # Register & login logic
 │   ├── cartController.js    # Cart CRUD operations
+│   ├── contactController.js # Contact form handling
 │   ├── orderController.js   # Checkout & order history
 │   └── productController.js # Product CRUD (admin-restricted)
 ├── middlewares/
@@ -34,25 +37,34 @@ ahm-ecommerce-system/
 │   ├── authRoutes.js        # /api/auth/*
 │   ├── productRoutes.js     # /api/products/*
 │   ├── cartRoutes.js        # /api/cart/*
-│   └── orderRoutes.js       # /api/orders/*
+│   ├── orderRoutes.js       # /api/orders/*
+│   └── contactRoutes.js     # /api/contact/*
 ├── public/
 │   ├── index.html           # Landing page
 │   ├── css/style.css        # Global stylesheet
 │   ├── js/main.js           # Frontend logic
 │   └── views/
-│       ├── login.html       # Login page
-│       ├── register.html    # Registration page
-│       ├── cart.html         # Shopping cart
+│       ├── about.html       # About page
+│       ├── admin.html       # Admin dashboard
+│       ├── cart.html        # Shopping cart
 │       ├── checkout.html    # Checkout page
+│       ├── contact.html     # Contact page
+│       ├── login.html       # Login page
 │       ├── orders.html      # Order history
-│       └── admin.html       # Admin dashboard
+│       └── register.html    # Registration page
 ├── schema.sql               # Database table definitions
 ├── seed.sql                 # Sample/seed data
+├── init.js                  # Database initialization script
+├── explainer.md             # Developer explainer log
 ├── app.js                   # Express entry point
 ├── .env                     # Environment variables (not committed)
 ├── .gitignore
 └── package.json
 ```
+
+## Additional Files
+
+- `explainer.md`: A detailed log documenting the development phases, coding choices, and architectural decisions made throughout the project.
 
 ## Getting Started
 
@@ -84,10 +96,9 @@ ahm-ecommerce-system/
    JWT_SECRET=your_secret_key_here
    ```
 
-4. **Set up the database** — Start XAMPP and ensure MySQL is running, then import the schema and seed data:
+4. **Set up the database** — Start XAMPP and ensure MySQL is running, then initialize the database:
    ```bash
-   mysql -u root -p < schema.sql
-   mysql -u root -p < seed.sql
+   node init.js
    ```
 
 5. **Start the server**
