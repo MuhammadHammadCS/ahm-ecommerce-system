@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us – AHM</title>
+    <meta name="description" content="Get in touch with AHM Luxury – Contact us for inquiries, support, or feedback.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        /* ── Contact Form Styles ── */
+        .contact-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+
+        .contact-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .form-control {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+            background: var(--bg-main);
+            color: var(--text-dark);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .btn-submit {
+            background: var(--primary);
+            border: 1px solid var(--primary);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background: var(--accent-dark);
+            border-color: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        .contact-info {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .contact-info h5 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Hero section for Contact page */
+        .contact-hero {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 80px 0 60px;
+        }
+
+        /* Success/Error Messages */
+        .alert {
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .alert-success {
+            background: rgba(25, 135, 84, 0.1);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .alert-danger {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Promo Banner (same as index) -->
+    <div class="promo-banner text-center py-2 text-white small fw-bold text-uppercase tracking-wider">
+        <span>Free Shipping on Orders $75+ | 100% Authentic Guarantee | Free Gift with Every Purchase</span>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- Logo -->
+            <a class="navbar-brand m-0" href="/">AHM</a>
+
+            <!-- Right: Theme + Nav -->
+            <div class="d-flex align-items-center gap-3">
+                <button onclick="toggleTheme()" class="theme-toggle-btn" id="theme-icon"
+                    aria-label="Toggle Theme">🌙</button>
+                <a href="/" class="btn btn-outline-primary btn-sm">Back to Store</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="contact-hero text-center">
+        <div class="container">
+            <span class="badge rounded-pill hero-badge px-3 py-2 mb-4 text-uppercase tracking-wider"
+                style="font-size:0.7rem;">Get In Touch</span>
+            <h1 class="font-serif fw-bold mb-3" style="font-size:3.5rem; letter-spacing:4px; text-transform:uppercase;">
+                Contact Us</h1>
+            <p class="mx-auto text-muted" style="max-width:560px; font-size:1.05rem; font-weight:300; line-height:1.8;">
+                Have questions about our products, need support, or want to share feedback? We'd love to hear from you.
+                Send us a message and we'll get back to you as soon as possible.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-5 my-5">
+        <div class="container">
+            <div class="row g-5 justify-content-center">
+                <!-- Contact Form -->
+                <div class="col-lg-8">
+                    <div class="contact-card p-4 p-lg-5">
+                        <h2 class="font-serif fw-bold mb-4 text-center" style="color: var(--text-dark);">Send us a Message</h2>
+
+                        <!-- Alert Messages -->
+                        <div id="alert-container"></div>
+
+                        <form id="contact-form">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label fw-bold small text-uppercase tracking-wider" style="color: var(--text-dark);">Email Address *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required
+                                           placeholder="your.email@example.com">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label fw-bold small text-uppercase tracking-wider" style="color: var(--text-dark);">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone"
+                                           placeholder="+1 (555) 123-4567">
+                                </div>
+                                <div class="col-12">
+                                    <label for="message" class="form-label fw-bold small text-uppercase tracking-wider" style="color: var(--text-dark);">Message *</label>
+                                    <textarea class="form-control" id="message" name="message" rows="6" required
+                                              placeholder="Tell us how we can help you..."></textarea>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-submit btn-lg px-5 py-3 fw-bold text-uppercase tracking-wider">
+                                        Send Message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="col-lg-4">
+                    <div class="contact-info">
+                        <h5 class="fw-bold text-uppercase tracking-wider">Contact Information</h5>
+                        <p><strong>Email:</strong> support@ahm-luxury.com</p>
+                        <p><strong>Phone:</strong> +1 (555) AHM-LUXURY</p>
+                        <p><strong>Hours:</strong> Mon-Fri 9AM-6PM EST</p>
+                        <p><strong>Response Time:</strong> Within 24 hours</p>
+
+                        <hr style="border-color: var(--border-color);">
+
+                        <h5 class="fw-bold text-uppercase tracking-wider">Follow Us</h5>
+                        <div class="d-flex gap-3">
+                            <a href="#" class="text-muted" style="font-size: 1.5rem;">📘</a>
+                            <a href="#" class="text-muted" style="font-size: 1.5rem;">🐦</a>
+                            <a href="#" class="text-muted" style="font-size: 1.5rem;">📷</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (same as index) -->
+    <footer class="footer pt-5 pb-4">
+        <div class="container">
+            <div class="row gy-4 mb-5 border-bottom pb-5 border-secondary">
+                <div class="col-md-4">
+                    <h4 class="fw-bold mb-3 font-serif">AHM</h4>
+                    <p class="text-muted small">Curating the finest luxury fragrances, cosmetics, and lifestyle essentials for the modern creative.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-uppercase mb-3 tracking-wider">Quick Links</h6>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="#products-container" class="text-muted text-decoration-none small">Shop All</a>
+                        <a href="/views/about.html" class="text-muted text-decoration-none small">About Us</a>
+                        <a href="/views/contact.html" class="text-muted text-decoration-none small">Contact Us</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-uppercase mb-3 tracking-wider">Join Our Newsletter</h6>
+                    <div class="input-group">
+                        <input type="email" class="form-control rounded-0 bg-transparent text-light border-secondary placeholder-muted" placeholder="Email address">
+                        <button class="btn btn-outline-light rounded-0 px-4">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center text-muted small">
+                © 2026 AHM Official. All rights reserved. | <a href="#" class="text-muted text-decoration-none mx-2">Privacy Policy</a> | <a href="#" class="text-muted text-decoration-none mx-2">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon();
+
+            // Handle contact form submission
+            const contactForm = document.getElementById('contact-form');
+            const alertContainer = document.getElementById('alert-container');
+
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(contactForm);
+                const data = Object.fromEntries(formData);
+
+                try {
+                    const response = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        showAlert('Message sent successfully! We\'ll get back to you soon.', 'success');
+                        contactForm.reset();
+                    } else {
+                        showAlert(result.message || 'Failed to send message. Please try again.', 'danger');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showAlert('Network error. Please check your connection and try again.', 'danger');
+                }
+            });
+
+            function showAlert(message, type) {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `;
+                // Auto-dismiss after 5 seconds
+                setTimeout(() => {
+                    const alert = alertContainer.querySelector('.alert');
+                    if (alert) {
+                        alert.classList.remove('show');
+                        setTimeout(() => alert.remove(), 150);
+                    }
+                }, 5000);
+            }
+
+            function updateThemeIcon() {
+                const themeIcon = document.getElementById('theme-icon');
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                themeIcon.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+            }
+        });
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+
+            const themeIcon = document.getElementById('theme-icon');
+            themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        }
+    </script>
+</body>
+
+</html>

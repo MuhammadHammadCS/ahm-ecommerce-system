@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+    /* Strict Monochrome Figma Variables */
+    --primary: #000000;
+    --primary-hover: #333333;
+    --bg-main: #FFFFFF;
+    --bg-secondary: #F9F9F9;
+    --bg-tertiary: #F5F4F0;
+    --card-bg: #FFFFFF;
+    --text-dark: #111111;
+    --text-muted: #666666;
+    --border-color: #EFECE6;
+    --accent-dark: #000000;
+    --invert-img: 0;
+}
+
+[data-theme="dark"] {
+    /* Dark Mode Variables - Luxurious OLED Black with Soft Gold Accents */
+    --primary: #C5A059; 
+    --primary-hover: #A38042;
+    --bg-main: #0A0A0A;
+    --bg-secondary: #141414;
+    --bg-tertiary: #1A1A1A;
+    --card-bg: #111111;
+    --text-dark: #FAFAFA;
+    --text-muted: #888888;
+    --border-color: #2A2A2A;
+    --accent-dark: #FFFFFF;
+    --invert-img: 0.1;
+}
+
+/* Override Bootstrap Utilities for Dark Mode Support */
+.text-dark { color: var(--text-dark) !important; }
+.text-muted { color: var(--text-muted) !important; }
+.text-primary { color: var(--primary) !important; }
+.bg-light { background-color: var(--bg-secondary) !important; color: var(--text-dark) !important; }
+.bg-dark { background-color: var(--accent-dark) !important; color: var(--bg-main) !important; }
+.border-secondary { border-color: var(--border-color) !important; }
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Utilities for Figma Alignment */
+.font-serif { font-family: 'Playfair Display', serif; }
+.tracking-wider { letter-spacing: 2px; }
+.bg-card { background-color: var(--card-bg) !important; }
+
+.hero-badge {
+    background-color: var(--accent-dark);
+    color: var(--bg-main) !important;
+    border-radius: 999px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+}
+
+/* Promo Banner */
+.promo-banner {
+    background-color: var(--accent-dark);
+    color: var(--bg-main) !important;
+}
+
+/* Navbar */
+.navbar {
+    background: var(--card-bg) !important;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem 0;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.02);
+    transition: all 0.3s ease;
+}
+.navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--accent-dark) !important;
+    letter-spacing: 6px;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    transition: color 0.4s ease;
+}
+.navbar-brand:hover {
+    color: var(--primary) !important;
+    text-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 0; 
+    padding: 0.8rem 2rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid transparent;
+}
+.btn-primary {
+    background-color: var(--accent-dark);
+    color: var(--bg-main); /* Inverts color cleanly */
+}
+.btn-primary:hover {
+    background-color: var(--bg-main);
+    color: var(--accent-dark);
+    border: 1px solid var(--accent-dark);
+}
+.btn-outline-primary {
+    border: 1px solid var(--accent-dark);
+    color: var(--text-dark);
+    background-color: transparent;
+}
+.btn-outline-primary:hover {
+    background-color: var(--accent-dark);
+    color: var(--bg-main);
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.theme-toggle-btn:hover {
+    background: var(--bg-secondary);
+    color: var(--primary);
+}
+
+/* Cards */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.card-body {
+    color: var(--text-dark);
+}
+.product-card {
+    display: flex;
+    flex-direction: column;
+}
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--primary);
+}
+.product-img-container {
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+.product-img {
+    height: 200px;
+    object-fit: contain;
+    transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+    filter: brightness(calc(1 - var(--invert-img)));
+}
+.product-card:hover .product-img {
+    transform: scale(1.15);
+}
+.product-price {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
+/* Milestones / Odometer Section */
+.milestone-section {
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+.odometer {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--text-dark) !important;
+    line-height: 1;
+}
+
+/* Hero Section */
+.hero-section {
+    padding: 100px 0;
+    background-color: var(--bg-secondary);
+    margin-bottom: 0;
+}
+.hero-title {
+    font-size: 4.5rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+.hero-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto 2.5rem auto;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--bg-secondary);
+    color: var(--text-dark);
+}
+.footer h4, .footer h6 {
+    color: var(--text-dark);
+}
+
+.category-box {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+}

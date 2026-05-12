@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - AHM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        .edit-input {
+            width: 90px;
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 0.85rem;
+        }
+        .status-msg {
+            font-size: 0.78rem;
+            min-height: 18px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand text-danger" href="/">AHM ADMIN</a>
+            <div class="d-flex">
+                <a href="/" class="btn btn-outline-primary btn-sm">Back to Store</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5">
+        <div class="row g-4">
+            <!-- Add Product Form -->
+            <div class="col-lg-4">
+                <div class="card p-4 h-100">
+                    <h4 class="mb-4">Add New Product</h4>
+                    <div id="add-status" class="alert d-none mb-3" role="alert"></div>
+                    <form id="add-product-form">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">NAME</label>
+                            <input type="text" id="p-name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">DESCRIPTION</label>
+                            <textarea id="p-desc" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">PRICE ($)</label>
+                            <input type="number" step="0.01" min="0" id="p-price" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">STOCK</label>
+                            <input type="number" min="0" id="p-stock" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">IMAGE URL</label>
+                            <input type="text" id="p-image" class="form-control" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-muted small fw-bold">CATEGORY</label>
+                            <select id="p-category" class="form-select">
+                                <option value="1">1 – Designer Fragrances</option>
+                                <option value="2">2 – Niche Fragrances</option>
+                                <option value="3">3 – Luxury Cosmetics</option>
+                                <option value="4">4 – Daily Essentials</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2">Save Product</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Product List Table -->
+            <div class="col-lg-8">
+                <div class="card p-4 h-100">
+                    <h4 class="mb-4">Manage Catalog</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Price ($)</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-product-list">
+                                <!-- JS injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user || user.role !== 'admin') {
+                alert('Access Denied. You must be an admin.');
+                window.location.href = '/';
+                return;
+            }
+            fetchAdminProducts();
+        });
+
+        async function fetchAdminProducts() {
+            try {
+                const res = await fetch('/api/products');
+                const products = await res.json();
+                const tbody = document.getElementById('admin-product-list');
+                tbody.innerHTML = '';
+
+                products.forEach(p => {
+                    const row = document.createElement('tr');
+                    row.id = `row-${p.id}`;
+                    row.innerHTML = `
+                        <td class="text-muted small">${p.id}</td>
+                        <td><img src="${p.image_url}" style="width:40px;height:40px;object-fit:contain;" class="border rounded bg-white p-1"></td>
+                        <td class="fw-bold" style="max-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${p.name}">${p.name}</td>
+                        <td>
+                            <input type="number" step="0.01" min="0"
+                                id="price-${p.id}"
+                                class="form-control form-control-sm edit-input"
+                                value="${parseFloat(p.price).toFixed(2)}">
+                        </td>
+                        <td>
+                            <input type="number" min="0"
+                                id="stock-${p.id}"
+                                class="form-control form-control-sm edit-input"
+                                value="${p.stock}">
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column gap-1">
+                                <div class="d-flex gap-1">
+                                    <button class="btn btn-sm btn-success" onclick="updateProduct(${p.id})">Update</button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${p.id})">Delete</button>
+                                </div>
+                                <span class="status-msg text-muted" id="status-${p.id}"></span>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function updateProduct(id) {
+            const token = localStorage.getItem('token');
+            const price = document.getElementById(`price-${id}`).value;
+            const stock = document.getElementById(`stock-${id}`).value;
+            const statusEl = document.getElementById(`status-${id}`);
+
+            statusEl.textContent = 'Saving...';
+            statusEl.className = 'status-msg text-muted';
+
+            try {
+                const res = await fetch(`/api/products/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ price: parseFloat(price), stock: parseInt(stock) })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    statusEl.textContent = '✓ Saved!';
+                    statusEl.className = 'status-msg text-success fw-bold';
+                } else {
+                    statusEl.textContent = '✗ ' + data.message;
+                    statusEl.className = 'status-msg text-danger';
+                }
+            } catch (err) {
+                statusEl.textContent = '✗ Network error';
+                statusEl.className = 'status-msg text-danger';
+            }
+
+            // Clear status message after 3 seconds
+            setTimeout(() => {
+                statusEl.textContent = '';
+                statusEl.className = 'status-msg text-muted';
+            }, 3000);
+        }
+
+        // ---- Add Product ----
+        document.getElementById('add-product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            const statusEl = document.getElementById('add-status');
+            const productData = {
+                name: document.getElementById('p-name').value,
+                description: document.getElementById('p-desc').value,
+                price: parseFloat(document.getElementById('p-price').value),
+                stock: parseInt(document.getElementById('p-stock').value),
+                image_url: document.getElementById('p-image').value,
+                category_id: parseInt(document.getElementById('p-category').value)
+            };
+
+            try {
+                const res = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(productData)
+                });
+
+                statusEl.classList.remove('d-none', 'alert-success', 'alert-danger');
+                if (res.ok) {
+                    statusEl.textContent = '✓ Product added successfully!';
+                    statusEl.classList.add('alert-success');
+                    document.getElementById('add-product-form').reset();
+                    fetchAdminProducts();
+                } else {
+                    const data = await res.json();
+                    statusEl.textContent = '✗ ' + data.message;
+                    statusEl.classList.add('alert-danger');
+                }
+            } catch (err) {
+                console.error(err);
+                statusEl.classList.remove('d-none');
+                statusEl.textContent = '✗ Failed to add product.';
+                statusEl.classList.add('alert-danger');
+            }
+        });
+
+        // ---- Delete Product ----
+        async function deleteProduct(id) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+            const token = localStorage.getItem('token');
+            const statusEl = document.getElementById(`status-${id}`);
+            try {
+                const res = await fetch(`/api/products/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    document.getElementById(`row-${id}`).remove();
+                } else {
+                    statusEl.textContent = '✗ Delete failed.';
+                    statusEl.className = 'status-msg text-danger';
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - AHM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">AHM</a>
+            <div class="d-flex">
+                <a href="/views/cart.html" class="btn btn-outline-primary btn-sm">Back to Cart</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5">
+        <h2 class="mb-4">Secure Checkout</h2>
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card mb-4">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">Shipping Information</h4>
+                        <form id="checkout-form">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-bold text-uppercase">First Name</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-bold text-uppercase">Last Name</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label text-muted small fw-bold text-uppercase">Address</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-bold text-uppercase">City</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-bold text-uppercase">Zip Code</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <h4 class="mt-5 mb-4">Payment Method</h4>
+                            <div class="alert alert-secondary text-center border-0">
+                                <strong>MVP Notice:</strong> Payment is simulated. Just click Place Order.
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 mt-3 py-3 fs-5">Place Order</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card sticky-top" style="top: 100px;">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">Order Summary</h4>
+                        <div id="summary-items">
+                            <div class="text-muted text-center">Loading...</div>
+                        </div>
+                        <hr class="my-4">
+                        <div class="d-flex justify-content-between">
+                            <h4 class="mb-0">Total</h4>
+                            <h4 class="mb-0 text-primary" id="summary-total">$0.00</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchCartSummary);
+
+        async function fetchCartSummary() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/views/login.html';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/cart', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const cartItems = await res.json();
+                const container = document.getElementById('summary-items');
+                const totalElement = document.getElementById('summary-total');
+
+                container.innerHTML = '';
+                if (cartItems.length === 0) {
+                    window.location.href = '/views/cart.html';
+                    return;
+                }
+
+                let total = 0;
+                cartItems.forEach(item => {
+                    total += item.price * item.quantity;
+                    container.innerHTML += `
+                        <div class="d-flex justify-content-between mb-3 align-items-center">
+                            <div>
+                                <strong class="d-block">${item.name}</strong>
+                                <span class="text-muted small">Qty: ${item.quantity}</span>
+                            </div>
+                            <span class="fw-bold">$${(item.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+                totalElement.textContent = '$' + total.toFixed(2);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch('/api/orders/checkout', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert('Order placed successfully! Redirecting to your order history.');
+                    window.location.href = '/views/orders.html';
+                } else {
+                    alert(data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Checkout failed.');
+            }
+        });
+    </script>
+</body>
+
+</html>

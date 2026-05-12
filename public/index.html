@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHM - Luxury E-Commerce</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Promo Banner -->
+    <div class="promo-banner text-center py-2 text-white small fw-bold text-uppercase tracking-wider">
+        <span>Free Shipping on Orders $75+ | 100% Authentic Guarantee | Free Gift with Every Purchase</span>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- Left: Logo -->
+            <a class="navbar-brand m-0" href="/">AHM</a>
+            
+            <!-- Center: Links -->
+            <ul class="navbar-nav d-none d-lg-flex mx-auto gap-4 fw-medium text-uppercase small">
+                <li class="nav-item"><a class="nav-link text-dark" href="#products-container">Fragrances</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#products-container">Cosmetics</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#products-container">Skincare</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#products-container">Lifestyle</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#products-container">New Arrivals</a></li>
+            </ul>
+
+            <!-- Right: Icons / Actions -->
+            <div class="d-flex align-items-center gap-3">
+                <button onclick="toggleTheme()" class="theme-toggle-btn" id="theme-icon" aria-label="Toggle Theme">🌙</button>
+                <div class="d-flex align-items-center gap-2" id="nav-actions">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section d-flex align-items-center">
+        <div class="container text-start">
+            <div class="row">
+                <div class="col-md-8 col-lg-6">
+                    <span class="badge rounded-pill hero-badge px-3 py-2 mb-4 text-uppercase tracking-wider">Spring Collection 2026</span>
+                    <h1 class="hero-title display-3 fw-bold mb-4">Discover Your Signature Style</h1>
+                    <p class="hero-subtitle mb-5 text-muted" style="max-width: 600px; margin-left: 0;">Elevate your daily ritual with our curated selection of world-class designer fragrances and luxury beauty essentials.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#products-container" class="btn btn-primary btn-lg px-5 py-3">Shop Now</a>
+                        <a href="#products-container" class="btn btn-outline-primary btn-lg px-5 py-3">Explore Collections</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <div class="container mb-5 py-5 border-bottom">
+        <div class="row text-center g-4">
+            <div class="col-md-3">
+                <div class="p-4 rounded-0 shadow-sm category-box h-100" style="transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <h4 class="fw-bold mb-1 font-serif">Luxury Fragrances</h4>
+                    <p class="text-muted small mb-0">Designer & Niche</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 rounded-0 shadow-sm category-box h-100" style="transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <h4 class="fw-bold mb-1 font-serif">Cosmetics</h4>
+                    <p class="text-muted small mb-0">Premium Makeup</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 rounded-0 shadow-sm category-box h-100" style="transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <h4 class="fw-bold mb-1 font-serif">Skincare</h4>
+                    <p class="text-muted small mb-0">Daily Rituals</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 rounded-0 shadow-sm category-box h-100" style="transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <h4 class="fw-bold mb-1 font-serif">Lifestyle</h4>
+                    <p class="text-muted small mb-0">Curated Goods</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="container mb-5">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <h2 class="fw-bold font-serif m-0">Trending Now</h2>
+            <a href="#" class="text-muted text-decoration-none fw-bold small text-uppercase tracking-wider">View All Collection →</a>
+        </div>
+        <div class="row g-4" id="products-container">
+            <div class="col-12 text-center text-muted py-5" id="loading-spinner">
+                Loading products...
+            </div>
+        </div>
+    </div>
+
+    <!-- Milestones / Odometer Section -->
+    <section class="milestone-section text-center py-5">
+        <div class="container py-5">
+            <h3 class="mb-5 font-serif fw-bold">Join Our Growing Community</h3>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-3 col-6">
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="d-flex align-items-baseline">
+                            <div class="odometer text-primary" data-target="50000">0</div>
+                            <span class="fs-2 text-primary fw-bold">+</span>
+                        </div>
+                        <h6 class="fw-bold text-muted text-uppercase tracking-wider mt-2">Happy Customers</h6>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="d-flex align-items-baseline">
+                            <div class="odometer text-primary" data-target="500">0</div>
+                            <span class="fs-2 text-primary fw-bold">+</span>
+                        </div>
+                        <h6 class="fw-bold text-muted text-uppercase tracking-wider mt-2">Premium Fragrances</h6>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="d-flex align-items-baseline">
+                            <div class="odometer text-primary" data-target="4.9">0</div>
+                            <span class="fs-2 text-primary fw-bold">/5</span>
+                        </div>
+                        <h6 class="fw-bold text-muted text-uppercase tracking-wider mt-2">Average Rating</h6>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="d-flex align-items-baseline">
+                            <div class="odometer text-primary" data-target="100">0</div>
+                            <span class="fs-2 text-primary fw-bold">%</span>
+                        </div>
+                        <h6 class="fw-bold text-muted text-uppercase tracking-wider mt-2">Authentic Products</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer pt-5 pb-4">
+        <div class="container">
+            <div class="row gy-4 mb-5 border-bottom pb-5 border-secondary">
+                <div class="col-md-4">
+                    <h4 class="fw-bold mb-3 font-serif">AHM</h4>
+                    <p class="text-muted small">Curating the finest luxury fragrances, cosmetics, and lifestyle essentials for the modern creative.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-uppercase mb-3 tracking-wider">Quick Links</h6>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="#products-container" class="text-muted text-decoration-none small">Shop All</a>
+                        <a href="/views/about.html" class="text-muted text-decoration-none small">About Us</a>
+                        <a href="/views/contact.html" class="text-muted text-decoration-none small">Contact Us</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-uppercase mb-3 tracking-wider">Join Our Newsletter</h6>
+                    <div class="input-group">
+                        <input type="email" class="form-control rounded-0 bg-transparent text-light border-secondary placeholder-muted" placeholder="Email address">
+                        <button class="btn btn-outline-light rounded-0 px-4">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center text-muted small">
+                © 2026 AHM Official. All rights reserved. | <a href="#" class="text-muted text-decoration-none mx-2">Privacy Policy</a> | <a href="#" class="text-muted text-decoration-none mx-2">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+            const navActions = document.getElementById('nav-actions');
+
+            if (token && user) {
+                let adminBtn = '';
+                if(user.role === 'admin') {
+                    adminBtn = `<a href="/views/admin.html" class="btn btn-outline-danger btn-sm me-2 fw-bold text-uppercase tracking-wider">Admin</a>`;
+                }
+
+                navActions.innerHTML = `
+                    <span class="me-3 fw-bold text-muted d-none d-md-inline small text-uppercase">Hi, ${user.name}</span>
+                    ${adminBtn}
+                    <a href="/views/orders.html" class="btn btn-outline-primary btn-sm me-2 text-uppercase tracking-wider">Orders</a>
+                    <a href="/views/cart.html" class="btn btn-primary btn-sm me-2 text-uppercase tracking-wider">Cart</a>
+                    <button class="btn btn-outline-secondary btn-sm text-uppercase tracking-wider" onclick="logout()">Logout</button>
+                `;
+            } else {
+                navActions.innerHTML = `
+                    <a href="/views/login.html" class="btn btn-outline-primary btn-sm me-2 text-uppercase tracking-wider">Login</a>
+                    <a href="/views/register.html" class="btn btn-primary btn-sm shadow-sm text-uppercase tracking-wider">Register</a>
+                `;
+            }
+
+            fetchProducts();
+        });
+
+        async function fetchProducts() {
+            const container = document.getElementById('products-container');
+            try {
+                const res = await fetch('/api/products');
+                const products = await res.json();
+                
+                container.innerHTML = ''; 
+                
+                if(products.length === 0) {
+                    container.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No products available yet.</p></div>';
+                    return;
+                }
+
+                products.forEach((product, index) => {
+                    // Inject fake badge logic to match design closely
+                    let badge = '';
+                    if (index === 0 || index === 4) badge = '<span class="badge rounded-pill bg-dark position-absolute top-0 start-0 m-3 px-3 py-2 fw-normal tracking-wider z-1">NEW</span>';
+                    if (index === 2 || index === 7) badge = '<span class="badge rounded-pill bg-danger position-absolute top-0 start-0 m-3 px-3 py-2 fw-normal tracking-wider z-1">SALE</span>';
+
+                    const oldPriceHtml = badge.includes('SALE') ? `<span class="text-muted text-decoration-line-through me-2 small">$${(parseFloat(product.price)*1.2).toFixed(2)}</span>` : '';
+
+                    const card = document.createElement('div');
+                    card.className = 'col-md-6 col-lg-3';
+                    card.innerHTML = `
+                        <div class="card product-card h-100 position-relative border-0 bg-transparent">
+                            ${badge}
+                            <div class="product-img-container rounded-0 bg-light">
+                                <img src="${product.image_url || 'https://via.placeholder.com/300'}" class="product-img" alt="${product.name}">
+                            </div>
+                            <div class="card-body d-flex flex-column p-4 bg-card">
+                                <span class="text-muted mb-2 align-self-start fw-bold small text-uppercase tracking-wider">${product.category_name || 'General'}</span>
+                                <h5 class="card-title mb-2 fs-5 font-serif fw-bold">${product.name}</h5>
+                                <p class="card-text text-muted small flex-grow-1">${product.description.substring(0, 60)}...</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3 border-top pt-3 border-secondary-subtle">
+                                    <div>
+                                        ${oldPriceHtml}
+                                        <span class="product-price fw-bold text-dark">$${product.price}</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-dark rounded-circle p-2" onclick="addToCart(${product.id})" style="width:35px; height:35px; display:flex; align-items:center; justify-content:center;">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = '<div class="col-12 text-center text-danger">Error loading products.</div>';
+            }
+        }
+
+        async function addToCart(productId) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/views/login.html';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ productId, quantity: 1 })
+                });
+
+                if (res.status === 401) {
+                    logout(); 
+                    return;
+                }
+
+                const data = await res.json();
+                if (res.ok) {
+                    showToast('Item successfully added to cart!', 'success');
+                } else {
+                    showToast(data.message, 'danger');
+                }
+            } catch (error) {
+                console.error(error);
+                showToast('Failed to add item', 'danger');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
